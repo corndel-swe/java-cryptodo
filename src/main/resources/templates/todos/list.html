@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cryptodos | Todos</title>
+  </head>
+  <body>
+    <h1>Todos</h1>
+    <ul>
+      <li th:each="todo : ${todos}">
+        <span th:text="${todo.description}"></span>
+        <b th:if="${todo.completed}">(completed)</b>
+      </li>
+    </ul>
+  </body>
+</html>
