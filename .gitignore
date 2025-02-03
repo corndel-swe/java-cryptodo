@@ -29,3 +29,5 @@ buildNumber.properties
 src/.DS_Store
 
 .env
+
+db.sqlite
