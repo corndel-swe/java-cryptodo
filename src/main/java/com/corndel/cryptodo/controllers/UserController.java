@@ -1,35 +1,36 @@
 package com.corndel.cryptodo.controllers;
 
 import com.corndel.cryptodo.models.User;
-import com.corndel.cryptodo.utils.DB;
+import com.corndel.cryptodo.repositories.UserRepository;
 import io.javalin.http.Context;
+import io.javalin.security.BasicAuthCredentials;
 
 import java.sql.SQLException;
+
 
 public class UserController {
 
     public static void create(Context context) {
-        User user = User.of(context);
-        String query = "INSERT INTO users (username,password,email) VALUES(?,?,?)";
-        int affectedRows;
+        String username = context.formParam("username");
+        String password = context.formParam("password");
+        String email = context.formParam("email");
 
-        try (var connection = DB.getConnection();
-             var statement = connection.prepareStatement(query)) {
+        if (username == null || password == null || email == null) {
+            context.result("Error");
+            return;
+        }
 
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
-            statement.setString(3, user.getEmail());
+        User user = new User(username, password, email);
 
-            affectedRows = statement.executeUpdate();
+        try {
+            UserRepository.create(user);
+            BasicAuthCredentials authCredentials = new BasicAuthCredentials(username, password);
+            context.sessionAttribute("Authorization", authCredentials);
+            context.redirect("./todo");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            context.result("Error");
         }
 
-        if (affectedRows > 0) {
-            context.redirect("/todo");
-        } else {
-            context.render("");
-        }
     }
 
     public static void register(Context context) {

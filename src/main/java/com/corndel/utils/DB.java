@@ -1,4 +1,4 @@
-package com.corndel.cryptodo.utils;
+package com.corndel.utils;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;

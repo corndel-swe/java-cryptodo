@@ -4,7 +4,7 @@
   - Research Bcrypt
   - Javalin Middleware? 
 - Refactor
-  - Repositories & Services & Models as records?
+  - Services?
 - Demo 
 
 ```md
