@@ -55,6 +55,7 @@
                 <version>10.15.2</version>
                 <configuration>
                     <url>jdbc:sqlite:db.sqlite</url>
+                    <cleanDisabled>false</cleanDisabled>
                 </configuration>
                 <dependencies>
                     <dependency>

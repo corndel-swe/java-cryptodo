@@ -1,13 +1,14 @@
 # Todo
 
+// CHARLIE-TODO: `bcrypt.hash()`?
+
 ## Secure the database
 
 The passwords currently in the database aren't hashed!
 
-- [ ] In `db/scripts` you'll find a file called `hashPasswords.js`
+- [ ] In `src/main/java/com/corndel/utils` you'll find a class called `PasswordHasher`
 
-- [ ] In this file, write code to read in a list of all users currently in the
-      database.
+- [ ] In this file, write your code to get all of the users currently store in the database you may want to review both the User model and UserPrepository. .
 
 - [ ] Loop through the list, and use `bcrypt.hash()` to hash each password.
 
@@ -19,17 +20,17 @@ The passwords currently in the database aren't hashed!
 > [!WARNING]
 >
 > running this script twice will hash the hash of the password! If you want to
-> run it again, you should do `npm run db:reset` to reset the passwords to their
-> raw form, first.
+> run it again, you should run both flyway commands on the README to reset the passwords to their
+> raw plain text form, first.
 
 ## Update POST /users
 
 The `POST /users` endpoint is still storing raw passwords in the database. Let's
 fix that.
 
-- [ ] Find the `user.controller.js` file
+- [ ] Find the `UserController` class
 
-- [ ] Read the `createUser` function to understand what it is doing
+- [ ] Read the `UserController.create()` function to understand what it is doing
 
 - [ ] Before the password is stored in the database, make sure to hash it with
       `bcrypt.hash()`
@@ -45,9 +46,9 @@ passwords in the request with hashed passwords in the database.
 
 - [ ] Try viewing the todos of a user to see that it's broken
 
-- [ ] Find the `todo.controller.js` file
+- [ ] Find the `TodoController` class
 
-- [ ] Read the `getUserTodos` function to understand what it is doing
+- [ ] Read the `TodoController.renderTodos` function to understand what it is doing
 
 - [ ] Instead of comparing the database password to the request password
       directly, use `bcrypt.compare()`
@@ -58,15 +59,15 @@ passwords in the request with hashed passwords in the database.
 
 Finally, let's add a new page allowing the logged in user to create a new todo.
 
-- [ ] In `views/todos` make a `new.ejs` file and create a form which adds a new
-      todo. It should make a `POST` request to the `/todos` endpoint.
+- [ ] In `src/main/resources/templates/todos` make a `new.html` file and create a form which adds a new
+      todo. It should make a `POST` request to the `/todo` endpoint.
 
-- [ ] Attach a controller to the `GET /todos/new` route in `todo.routes.js`
+- [ ] Hook up a new endpoint in the `App.getEndpointGroup()` method. This Endpoint should be to the `GET /todo/new` and it should render the new html file.
       which renders the form.
 
-- [ ] In `todo.controller.js`, add a `createTodo` function. It should verify the
+- [ ] In the `TodoController` class, add a `create` method. It should verify the
       username and password of the creating user, much in the same way that
-      `GET /todos` does (in fact, you could probably copy some of the code).
+      `GET /todo` and the `TodoController.renderTodos()` does (in fact, you could probably copy some of the code).
 
 > [!IMPORTANT]
 >
@@ -74,13 +75,12 @@ Finally, let's add a new page allowing the logged in user to create a new todo.
 > `WWW-Authenticate` header to `Basic realm="cryptodo"`. This is what makes the
 > browser show the login dialogue.
 
-- [ ] Attach the `createTodo` function to the `POST /todos` route in the
-      `todo.routes.js` file.
-
 Try out your form. Make sure the todo gets created and is correctly associated
 with the logged in user.
 
 ## :gem: Extension: middleware
+
+// CHARLIE-TODO: IS THIS POSSIBLE WITH JAVALIN?
 
 If you get through everything and need an extra challenge, notice that the code
 which checks the user password gets repeated in `renderUserTodos` and again in

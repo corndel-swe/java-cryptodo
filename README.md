@@ -14,7 +14,7 @@ This workshop makes frequent use of hashing. The recommended libraries for each
 language are given below:
 
 | language   | library                                                      |
-| ---------- | ------------------------------------------------------------ |
+|------------|--------------------------------------------------------------|
 | JavaScript | [bcrypt](https://www.npmjs.com/package/bcrypt#usage)         |
 | Java       | [bcrypt](https://github.com/patrickfav/bcrypt)               |
 | Python     | [bcrypt](https://github.com/pyca/bcrypt#usage)               |
@@ -22,38 +22,52 @@ language are given below:
 
 ## Getting started
 
-1. Clone the repo so you have it locally
+1. Clone the repo so you have it locally.
 
-2. Run `npm install` to get the dependencies
+2. Run the following to get the application's dependencies:
 
-3. Run `npm run db:reset` to migrate and seed the database
+    ```bash
+    ./mvnw clean
+    ./mvnw compile
+    ```
 
-4. Run `npm run dev` to start the development server
+3. Run the following to migrate and seed the database using Flyway. If at any point during the workshop you need to reset your DB, this command will also do so:
 
-5. Visit [localhost:5123](localhost:5123) in your browser to see the home page
+    ```bash
+    ./mvnw flyway:clean
+    ./mvnw flyway:migrate
+    ```
+
+4. Run the following to start the development server:
+
+    ```bash
+    ./mvnw exec:java -Dexec.mainClass=com.corndel.cryptodo.App
+    ```
+
+5. Visit [localhost:5123](http://localhost:5123/todos) in your browser to see the home page.
+
 
 ## Exploring the project
 
-The website has only 3 pages:
+The website has 3 pages:
 
 - `/` the home page
 
-- `/users/new` a sign up page
+- `/users/register` a sign up page
 
 - `/todos` a password protected list of todos
 
 Try the following:
 
-1. Inspect the database and choose a username and password combination you'd
-   like to log in as
+1. Inspect the schema and seed SQL files within `src/main/resources/db/migration` and choose a username and password combination you’d like to log in with.
 
-1. Visit `/todos` and input the username and password, you should now see their
-   todos
+2. Visit `/todos` and input the username and password, you should now see their
+   todos.
 
-1. Close and re-open your browser to clear the session, allowing you to log in
-   as another user
+3. Close and re-open your browser to clear the session, allowing you to log in
+   as another user.
 
-1. Visit `/users/new` and create a new user using the form - take a look at your new
+4. Visit `/users/register` and create a new user using the form - take a look at your new
    user in the database
 
 ## Moving on
