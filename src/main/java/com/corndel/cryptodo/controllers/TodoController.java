@@ -1,11 +1,18 @@
 package com.corndel.cryptodo.controllers;
 
 import com.corndel.cryptodo.models.Todo;
+import com.corndel.cryptodo.models.User;
 import com.corndel.cryptodo.repositories.TodoRepository;
 import com.corndel.cryptodo.repositories.UserRepository;
+import com.corndel.utils.PasswordHasher;
 import io.javalin.http.Context;
 import io.javalin.security.BasicAuthCredentials;
+import org.mindrot.jbcrypt.BCrypt;
 
+import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -14,31 +21,42 @@ public class TodoController {
 
     public static void renderTodos(Context context) {
 
-        BasicAuthCredentials authCredentials = getBasicAuthCredentials(context);
+        BasicAuthCredentials authCredentials = context.basicAuthCredentials();
 
         try {
-            if (authCredentials == null || !UserRepository.authenticateUser(authCredentials.getUsername(), authCredentials.getPassword())) {
-                throw new RuntimeException("\"Invalid credentials\"");
+            if (authCredentials == null) {
+                throw new RuntimeException("No Auth Credentials");
             }
 
-            List<Todo> all = TodoRepository.getTodosByUsername(authCredentials.getUsername());
+            User user = UserRepository.getUserByUsername(authCredentials.getUsername());
+
+            String givenPasswordUTF = new String(authCredentials.getPassword().getBytes(), StandardCharsets.UTF_8);
+            String storedPasswordUTF = new String(user.password().getBytes(), StandardCharsets.UTF_8);
+
+            boolean hasMatch = BCrypt.checkpw(givenPasswordUTF, storedPasswordUTF);
+
+            if (!hasMatch) {
+                byte[] passwordBytes = authCredentials.getPassword().getBytes(StandardCharsets.UTF_8);
+                String errorMessage = "DB - USER:" +
+                        user +
+                        "\nAUTH:" +
+                        authCredentials +
+                        "\nGIVEN PASSWORD BYTES" +
+                        Arrays.toString(passwordBytes);
+
+                throw new RuntimeException(errorMessage);
+            }
+
+            List<Todo> all = TodoRepository.getTodosByUserId(user.id());
 
             context.render("./todos/list.html", Map.of("todos", all));
 
         } catch (Exception e) {
+            System.out.println(e.getMessage());
+
             context.status(401)
                     .header("WWW-Authenticate", "Basic realm=\"cryptodo\"")
                     .result(e.getMessage());
         }
-    }
-
-    private static BasicAuthCredentials getBasicAuthCredentials(Context context) {
-        BasicAuthCredentials authCredentials = context.basicAuthCredentials();
-
-        if (authCredentials == null) {
-            authCredentials = context.sessionAttribute("Authorization");
-        }
-
-        return authCredentials;
     }
 }

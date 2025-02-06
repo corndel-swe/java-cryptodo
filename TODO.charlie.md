@@ -23,6 +23,5 @@ DEMO
 ```
 
 - Review Exercises
-- Review README
 
 

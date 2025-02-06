@@ -2,6 +2,8 @@ package com.corndel.cryptodo;
 
 import com.corndel.cryptodo.controllers.TodoController;
 import com.corndel.cryptodo.controllers.UserController;
+import com.corndel.utils.DB;
+import com.corndel.utils.PasswordHasher;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
 
@@ -11,6 +13,8 @@ import io.javalin.rendering.template.JavalinThymeleaf;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Map;
 
 import static io.javalin.apibuilder.ApiBuilder.path;
@@ -20,6 +24,15 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 public class App {
 
     public static void main(String[] args) {
+
+        try (Statement statement = DB.getConnection().createStatement()) {
+            statement.execute("PRAGMA encoding = 'UTF-8';");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        PasswordHasher.main(args);
+
         javalin().start(5123);
     }
 

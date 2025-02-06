@@ -12,15 +12,15 @@ import java.util.List;
 
 public class TodoRepository {
 
-    public static List<Todo> getTodosByUsername(String username) throws SQLException {
+    public static List<Todo> getTodosByUserId(int userId) throws SQLException {
 
         String query = "SELECT * FROM todos " +
                 "INNER JOIN users ON users.id = todos.user_id " +
-                "WHERE users.username = ?";
+                "WHERE users.id = ?";
 
         try (Connection con = DB.getConnection(); PreparedStatement stmt = con.prepareStatement(query)
         ) {
-            stmt.setString(1, username);
+            stmt.setInt(1, userId);
 
             try (ResultSet resultSet = stmt.executeQuery()) {
                 List<Todo> all = new ArrayList<>();
