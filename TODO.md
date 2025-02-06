@@ -6,16 +6,16 @@
 
 The passwords currently in the database aren't hashed!
 
-- [ ] In `src/main/java/com/corndel/utils` you'll find a class called `PasswordHasher`
+- [x] In `src/main/java/com/corndel/utils` you'll find a class called `PasswordHasher`
 
-- [ ] In this file, write your code to get all of the users currently store in the database you may want to review both the User model and UserPrepository. .
+- [x] In this file, write your code to get all of the users currently store in the database you may want to review both the User model and UserPrepository. .
 
-- [ ] Loop through the list, and use `bcrypt.hash()` to hash each password.
+- [x] Loop through the list, and use `BCrypt.withDefaults().hashToString()` to hash each password.
 
-- [ ] Replace each user's plaintext password in the database with the hashed
+- [x] Replace each user's plaintext password in the database with the hashed
       password.
 
-- [ ] Check the database to make sure the passwords appear to be hashed.
+- [x] Check the database to make sure the passwords appear to be hashed.
 
 > [!WARNING]
 >
@@ -28,14 +28,14 @@ The passwords currently in the database aren't hashed!
 The `POST /users` endpoint is still storing raw passwords in the database. Let's
 fix that.
 
-- [ ] Find the `UserController` class
+- [x] Find the `UserController` class
 
-- [ ] Read the `UserController.create()` function to understand what it is doing
+- [x] Read the `UserController.create()` function to understand what it is doing
 
-- [ ] Before the password is stored in the database, make sure to hash it with
+- [x] Before the password is stored in the database, make sure to hash it with
       `bcrypt.hash()`
 
-- [ ] Manually test the `POST /users` endpoint to make sure it is hashing before
+- [x] Manually test the `POST /users` endpoint to make sure it is hashing before
       creating the user. Fill out the new user form and check out the new row in
       the database.
 

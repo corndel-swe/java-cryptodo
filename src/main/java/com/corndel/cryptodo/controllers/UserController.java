@@ -2,10 +2,13 @@ package com.corndel.cryptodo.controllers;
 
 import com.corndel.cryptodo.models.User;
 import com.corndel.cryptodo.repositories.UserRepository;
+import com.corndel.utils.PasswordHasher;
 import io.javalin.http.Context;
 import io.javalin.security.BasicAuthCredentials;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 
 public class UserController {
@@ -20,12 +23,18 @@ public class UserController {
             return;
         }
 
-        User user = new User(username, password, email);
+        String passwordUTF = new String(password.getBytes(), StandardCharsets.UTF_8);
+
+        String hashedPassword = PasswordHasher.hash(passwordUTF);
+
+        // DEBUGGING
+        byte[] passwordBytes = passwordUTF.getBytes(StandardCharsets.UTF_8);
+        System.out.println(Arrays.toString(passwordBytes));
+
+        User user = new User(username, hashedPassword, email);
 
         try {
             UserRepository.create(user);
-            BasicAuthCredentials authCredentials = new BasicAuthCredentials(username, password);
-            context.sessionAttribute("Authorization", authCredentials);
             context.redirect("./todo");
         } catch (SQLException e) {
             context.result("Error");
