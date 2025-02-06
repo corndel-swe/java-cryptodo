@@ -44,7 +44,7 @@ language are given below:
     ./mvnw exec:java -Dexec.mainClass=com.corndel.cryptodo.App
     ```
 
-5. Visit [localhost:5123](http://localhost:5123/todos) in your browser to see the home page.
+5. Visit [localhost:5123](http://localhost:5123/) in your browser to see the home page.
 
 
 ## Exploring the project
@@ -53,16 +53,15 @@ The website has 3 pages:
 
 - `/` the home page
 
-- `/users/register` a sign up page
+- `/user/register` a sign up page
 
-- `/todos` a password protected list of todos
+- `/todo` a password protected list of todos
 
 Try the following:
 
 1. Inspect the schema and seed SQL files within `src/main/resources/db/migration` and choose a username and password combination you’d like to log in with.
 
-2. Visit `/todos` and input the username and password, you should now see their
-   todos.
+2. Visit `/todo`
 
 3. Close and re-open your browser to clear the session, allowing you to log in
    as another user.
