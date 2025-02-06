@@ -31,7 +31,8 @@ public class App {
             throw new RuntimeException(e);
         }
 
-        PasswordHasher.main(args);
+        // ÆG: Dissabled this - run it once before running the app
+        //PasswordHasher.main(args);
 
         javalin().start(5123);
     }

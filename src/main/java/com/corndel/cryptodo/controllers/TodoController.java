@@ -19,6 +19,10 @@ import java.util.Map;
 
 public class TodoController {
 
+    public static String extractSalt(String hashedPassword) {
+        return hashedPassword.substring(0, 29);
+    }
+
     public static void renderTodos(Context context) {
 
         BasicAuthCredentials authCredentials = context.basicAuthCredentials();
@@ -30,8 +34,15 @@ public class TodoController {
 
             User user = UserRepository.getUserByUsername(authCredentials.getUsername());
 
-            String givenPasswordUTF = new String(authCredentials.getPassword().getBytes(), StandardCharsets.UTF_8);
-            String storedPasswordUTF = new String(user.password().getBytes(), StandardCharsets.UTF_8);
+            String givenPasswordUTF = authCredentials.getPassword();
+            String storedPasswordUTF = user.password();
+
+            System.out.println("Stored hashed+salted password: " + storedPasswordUTF);
+            System.out.println("Given plaintext password: " + givenPasswordUTF);
+            String salt = extractSalt(storedPasswordUTF);
+            System.out.println("Extracted salt: " + salt);
+            System.out.println("Hashed+salted given password: " + BCrypt.hashpw(givenPasswordUTF, salt));
+
 
             boolean hasMatch = BCrypt.checkpw(givenPasswordUTF, storedPasswordUTF);
 
