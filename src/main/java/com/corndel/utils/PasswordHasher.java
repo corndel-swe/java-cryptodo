@@ -12,9 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PasswordHasher {
-
     public static String hash(String password) {
-        return new String(BCrypt.hashpw(password, BCrypt.gensalt()).getBytes(), StandardCharsets.UTF_8);
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
     public static void main(String[] args) {
@@ -23,15 +22,14 @@ public class PasswordHasher {
             List<User> users = UserRepository.findAll();
 
             // DEBUGGING
-            if (!users.getFirst().password().equals("itsAmeA123")) {
-                System.out.println("PASSWORDS ALREADY HASHED");
-                return;
-            }
+            // if (!users.getFirst().password().equals("itsAmeA123")) {
+            //     System.out.println("PASSWORDS ALREADY HASHED");
+            //     return;
+            // }
 
             for (User user : users) {
 
-                String password = new String(user.password().getBytes(), StandardCharsets.UTF_8);
-
+                String password = user.password();
                 String hashedPassword = hash(password);
 
 
