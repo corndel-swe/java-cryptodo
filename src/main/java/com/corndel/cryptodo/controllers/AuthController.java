@@ -6,8 +6,6 @@ import io.javalin.http.Context;
 import io.javalin.security.BasicAuthCredentials;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.SQLException;
-
 public class AuthController {
 
     public static void protect(Context context) {
@@ -27,10 +25,10 @@ public class AuthController {
             boolean hasMatch = BCrypt.checkpw(givenPassword, storedPassword);
 
             if (!hasMatch) {
-                throw new RuntimeException();
+                throw new RuntimeException("Invalid username or password. Please try again.");
             }
+
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             context.status(401)
                     .header("WWW-Authenticate", "Basic realm=\"cryptodo\"")
                     .result(e.getMessage());

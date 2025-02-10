@@ -25,7 +25,7 @@ public class App {
 
     public static Javalin javalin() {
         return Javalin.create(javalinConfig -> {
-            javalinConfig.staticFiles.add("/public", Location.CLASSPATH);
+            javalinConfig.staticFiles.add("src/main/resources/public", Location.EXTERNAL);
             javalinConfig.fileRenderer(getFileRenderer());
             javalinConfig.router.apiBuilder(getEndpointGroup());
         });
@@ -33,7 +33,7 @@ public class App {
 
     private static EndpointGroup getEndpointGroup() {
         return () -> {
-            path("/", () -> get(context -> context.render("/index.html", Map.of("title", "Home"))));
+            path("/", () -> get(context -> context.render("/index.html")));
             before("/todo", AuthController::protect);
             path("/todo", () -> {
                 post(TodoController::create);
