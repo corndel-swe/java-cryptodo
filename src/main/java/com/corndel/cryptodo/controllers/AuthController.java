@@ -3,6 +3,7 @@ package com.corndel.cryptodo.controllers;
 import com.corndel.cryptodo.models.User;
 import com.corndel.cryptodo.repositories.UserRepository;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 import io.javalin.security.BasicAuthCredentials;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -29,7 +30,7 @@ public class AuthController {
             }
 
         } catch (Exception e) {
-            context.status(401)
+            context.status(HttpStatus.UNAUTHORIZED)
                     .header("WWW-Authenticate", "Basic realm=\"cryptodo\"")
                     .result(e.getMessage());
         }
