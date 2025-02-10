@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{fragments/head :: head}" th:with="title='Cryptodos | New Todo'">
+
+<body>
+<header th:insert="~{fragments/nav :: nav}"></header>
+
+<h1 class="title">Create Todo</h1>
+
+<form th:action="@{/todo}" method="POST" class="center">
+    <label for="description">Description</label>
+    <input type="text" name="description" id="description" />
+    <span class="warn" th:if="${error}">Description cannot be empty</span>
+    <input type="submit" value="Add" />
+</form>
+</body>
+</html>
