@@ -65,7 +65,7 @@ public class Demo {
                 System.out.println("Password hash: " + hash);
 
                 // Compare the given password against the hashed password
-                // - The FE will have to send openSesame as the password
+                // - The FE will have to send openSesame as the password when prompted to authenticate
                 boolean result = BCrypt.checkpw(password, hash);
                 System.out.println("Hashed plaintext password matches hash: " + result);
 

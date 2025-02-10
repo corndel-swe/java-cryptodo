@@ -4,8 +4,7 @@ import com.corndel.cryptodo.models.User;
 import com.corndel.cryptodo.repositories.UserRepository;
 import com.corndel.utils.PasswordHasher;
 import io.javalin.http.Context;
-
-import java.sql.SQLException;
+import io.javalin.http.HttpStatus;
 
 public class UserController {
 
@@ -14,20 +13,21 @@ public class UserController {
         String password = context.formParam("password");
         String email = context.formParam("email");
 
-        if (username == null || password == null || email == null) {
-            context.result("Error");
-            return;
-        }
-
-        String hashedPassword = PasswordHasher.hash(password);
-
-        User user = new User(username, hashedPassword, email);
-
         try {
+
+            if (username == null || password == null || email == null) {
+                throw new RuntimeException("Please ensure that all required fields  are filled out.");
+            }
+
+            String hashedPassword = PasswordHasher.hash(password);
+
+            User user = new User(username, hashedPassword, email);
+
             UserRepository.create(user);
             context.redirect("./todo");
-        } catch (SQLException e) {
-            context.result("Error");
+        } catch (Exception e) {
+            context.status(HttpStatus.BAD_REQUEST)
+                    .result(e.getMessage());
         }
 
     }

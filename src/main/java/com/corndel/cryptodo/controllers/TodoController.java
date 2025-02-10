@@ -5,10 +5,9 @@ import com.corndel.cryptodo.models.User;
 import com.corndel.cryptodo.repositories.TodoRepository;
 import com.corndel.cryptodo.repositories.UserRepository;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 import io.javalin.security.BasicAuthCredentials;
-import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,19 +20,20 @@ public class TodoController {
 
         String description = context.formParam("description");
 
-        if (description == null) {
-            context.result("Error");
+        if (description == null || description.isEmpty()) {
+            context.render("./todos/new.html", Map.of("error", true));
             return;
         }
 
         try {
             User user = UserRepository.getUserByUsername(authCredentials.getUsername());
             TodoRepository.create(new Todo(user.id(), description));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            context.redirect("./todo");
+        } catch (Exception e) {
+            context.status(HttpStatus.BAD_REQUEST)
+                    .result(e.getMessage());
         }
 
-        context.redirect("./todo");
     }
 
     public static void renderTodos(Context context) {
@@ -45,14 +45,15 @@ public class TodoController {
 
             List<Todo> all = TodoRepository.getTodosByUserId(user.id());
 
-            context.render("./todos/list.html", Map.of("todos", all, "isAuthenticated", true));
+            context.render("./todos/list.html", Map.of("todos", all));
 
         } catch (Exception e) {
-
+            context.status(HttpStatus.BAD_REQUEST)
+                    .result(e.getMessage());
         }
     }
 
     public static void renderCreateTodo(Context context) {
-        context.render("./todos/new.html", Map.of("isAuthenticated", true));
+        context.render("./todos/new.html");
     }
 }
