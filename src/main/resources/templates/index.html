@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title th:text="${'Cryptodos | ' + title}"></title>
+<head th:insert="~{fragments/head :: head}" th:with="title='Cryptodos | Home'">
 </head>
 <body>
-    <h1>Cryptodos</h1>
-    <img th:src="@{/logo.png}" alt=""/>
+<header th:insert="~{fragments/nav :: nav}"></header>
+<h1 class="title">Cryptodos</h1>
+<div class="center">
+
+<img th:src="@{/logo.png}" alt="Todo list within a Shield" />
+</div>
 </body>
 </html>

@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" th:href="@{/style.css}" />
-    <title>Cryptodos | New User</title>
-  </head>
-  <body>
-    <form th:action="@{/user}" method="POST">
-      <label for="username">Username</label>
-      <input type="text" name="username" id="username" />
-      <label for="email">Email</label>
-      <input type="email" name="email" id="email" />
-      <label for="password">Password</label>
-      <input type="password" name="password" id="password" />
-      <input type="submit" value="Create User" />
-    </form>
-  </body>
+
+<head th:insert="~{fragments/head :: head}" th:with="title='Cryptodos | Register User'">
+
+
+<body>
+<header th:insert="~{fragments/nav :: nav}"></header>
+
+<h1 class="title">Create User</h1>
+
+<form th:action="@{/user}" method="POST" class="center">
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username" required/>
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" required/>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required/>
+    <input type="submit" value="Register"/>
+</form>
+</body>
 </html>
