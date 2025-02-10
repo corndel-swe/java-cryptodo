@@ -3,7 +3,6 @@ package com.corndel.cryptodo.repositories;
 import com.corndel.cryptodo.models.User;
 import com.corndel.utils.DB;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +23,9 @@ public class UserRepository {
                 int id = resultSet.getInt("id");
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
-                String storedPasswordUTF = new String(password.getBytes(), StandardCharsets.UTF_8);
                 String email = resultSet.getString("email");
                 String createdAt = resultSet.getString("created_at");
-                all.add(new User(username, storedPasswordUTF, email, id, createdAt));
+                all.add(new User(username, password, email, id, createdAt));
             }
 
             return all;
@@ -47,10 +45,9 @@ public class UserRepository {
                 int id = resultSet.getInt("id");
                 String user = resultSet.getString("username");
                 String password = resultSet.getString("password");
-                String storedPasswordUTF = new String(password.getBytes(), StandardCharsets.UTF_8);
                 String email = resultSet.getString("email");
                 String createdAt = resultSet.getString("created_at");
-                return new User(user, storedPasswordUTF, email, id, createdAt);
+                return new User(user, password, email, id, createdAt);
             }
         }
     }
