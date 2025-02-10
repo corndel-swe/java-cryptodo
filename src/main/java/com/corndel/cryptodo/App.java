@@ -1,39 +1,25 @@
 package com.corndel.cryptodo;
 
+import com.corndel.cryptodo.controllers.AuthController;
 import com.corndel.cryptodo.controllers.TodoController;
 import com.corndel.cryptodo.controllers.UserController;
-import com.corndel.utils.DB;
-import com.corndel.utils.PasswordHasher;
+
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
-
 import io.javalin.http.staticfiles.Location;
 import io.javalin.rendering.FileRenderer;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-import java.sql.SQLException;
-import java.sql.Statement;
+
 import java.util.Map;
 
-import static io.javalin.apibuilder.ApiBuilder.path;
-import static io.javalin.apibuilder.ApiBuilder.get;
-import static io.javalin.apibuilder.ApiBuilder.post;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class App {
 
     public static void main(String[] args) {
-
-        try (Statement statement = DB.getConnection().createStatement()) {
-            statement.execute("PRAGMA encoding = 'UTF-8';");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        // ÆG: Dissabled this - run it once before running the app
-        //PasswordHasher.main(args);
-
         javalin().start(5123);
     }
 
@@ -48,10 +34,15 @@ public class App {
     private static EndpointGroup getEndpointGroup() {
         return () -> {
             path("/", () -> get(context -> context.render("/index.html", Map.of("title", "Home"))));
-            path("/todo", () -> get("", TodoController::renderTodos));
+            before("/todo", AuthController::protect);
+            path("/todo", () -> {
+                post(TodoController::create);
+                get(TodoController::renderTodos);
+                get("/new", TodoController::renderCreateTodo);
+            });
             path("/user", () -> {
-                get("/register", UserController::register);
                 post(UserController::create);
+                get("/register", UserController::register);
             });
         };
     }
