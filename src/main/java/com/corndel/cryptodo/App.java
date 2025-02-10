@@ -12,9 +12,6 @@ import io.javalin.rendering.template.JavalinThymeleaf;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-
-import java.util.Map;
-
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class App {

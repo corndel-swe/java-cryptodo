@@ -16,6 +16,10 @@ public class TodoController {
 
     public static void create(Context context) {
 
+        if (context.status().isError()) {
+            return;
+        }
+
         BasicAuthCredentials authCredentials = context.basicAuthCredentials();
 
         String description = context.formParam("description");
@@ -39,6 +43,10 @@ public class TodoController {
     public static void renderTodos(Context context) {
 
         BasicAuthCredentials authCredentials = context.basicAuthCredentials();
+
+        if (context.status().isError()) {
+            return;
+        }
 
         try {
             User user = UserRepository.getUserByUsername(authCredentials.getUsername());
