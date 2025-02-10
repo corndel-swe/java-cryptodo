@@ -16,7 +16,7 @@ language are given below:
 | language   | library                                                      |
 |------------|--------------------------------------------------------------|
 | JavaScript | [bcrypt](https://www.npmjs.com/package/bcrypt#usage)         |
-| Java       | [bcrypt](https://github.com/patrickfav/bcrypt)               |
+| Java       | [bcrypt](https://github.com/jeremyh/jBCrypt)                 |
 | Python     | [bcrypt](https://github.com/pyca/bcrypt#usage)               |
 | C#         | [bcrypt](https://github.com/BcryptNet/bcrypt.net#how-to-use) |
 
@@ -31,7 +31,8 @@ language are given below:
     ./mvnw compile
     ```
 
-3. Run the following to migrate and seed the database using Flyway. If at any point during the workshop you need to reset your DB, this command will also do so:
+3. Run the following to migrate and seed the database using Flyway. If at any point during the workshop you need to
+   reset your DB, this command will also do so:
 
     ```bash
     ./mvnw flyway:clean
@@ -46,7 +47,6 @@ language are given below:
 
 5. Visit [localhost:5123](http://localhost:5123/) in your browser to see the home page.
 
-
 ## Exploring the project
 
 The website has 3 pages:
@@ -59,7 +59,8 @@ The website has 3 pages:
 
 Try the following:
 
-1. Inspect the schema and seed SQL files within `src/main/resources/db/migration` and choose a username and password combination you’d like to log in with.
+1. Inspect the schema and seed SQL files within `src/main/resources/db/migration` and choose a username and password
+   combination you’d like to log in with.
 
 2. Visit `/todo`
 
