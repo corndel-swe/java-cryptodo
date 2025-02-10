@@ -1,6 +1,5 @@
 package com.corndel.cryptodo;
 
-import com.corndel.cryptodo.controllers.AuthController;
 import com.corndel.cryptodo.controllers.TodoController;
 import com.corndel.cryptodo.controllers.UserController;
 
@@ -31,11 +30,8 @@ public class App {
     private static EndpointGroup getEndpointGroup() {
         return () -> {
             path("/", () -> get(context -> context.render("/index.html")));
-            before("/todo", AuthController::protect);
             path("/todo", () -> {
-                post(TodoController::create);
                 get(TodoController::renderTodos);
-                get("/new", TodoController::renderCreateTodo);
             });
             path("/user", () -> {
                 post(UserController::create);

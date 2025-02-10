@@ -14,54 +14,37 @@ import java.util.Map;
 
 public class TodoController {
 
-    public static void create(Context context) {
-
-        if (context.status().isError()) {
-            return;
-        }
-
-        BasicAuthCredentials authCredentials = context.basicAuthCredentials();
-
-        String description = context.formParam("description");
-
-        if (description == null || description.isEmpty()) {
-            context.render("./todos/new.html", Map.of("error", true));
-            return;
-        }
-
-        try {
-            User user = UserRepository.getUserByUsername(authCredentials.getUsername());
-            TodoRepository.create(new Todo(user.id(), description));
-            context.redirect("./todo");
-        } catch (Exception e) {
-            context.status(HttpStatus.BAD_REQUEST)
-                    .result(e.getMessage());
-        }
-
-    }
-
     public static void renderTodos(Context context) {
 
         BasicAuthCredentials authCredentials = context.basicAuthCredentials();
 
-        if (context.status().isError()) {
-            return;
-        }
-
         try {
+            if (authCredentials == null) {
+                throw new RuntimeException("No Auth Credentials");
+            }
+
             User user = UserRepository.getUserByUsername(authCredentials.getUsername());
+
+            String givenPassword = authCredentials.getPassword();
+
+            String storedPassword = user.password();
+
+            boolean hasMatch = storedPassword.equals(givenPassword);
+
+            if (!hasMatch) {
+                throw new RuntimeException("Invalid username or password. Please try again.");
+            }
 
             List<Todo> all = TodoRepository.getTodosByUserId(user.id());
 
             context.render("./todos/list.html", Map.of("todos", all));
 
         } catch (Exception e) {
-            context.status(HttpStatus.BAD_REQUEST)
+            context.status(HttpStatus.UNAUTHORIZED)
+                    .header("WWW-Authenticate", "Basic realm=\"cryptodo\"")
                     .result(e.getMessage());
         }
+
     }
 
-    public static void renderCreateTodo(Context context) {
-        context.render("./todos/new.html");
-    }
 }

@@ -49,7 +49,7 @@ language are given below:
 
 ## Exploring the project
 
-The website has 3 pages:
+The website currently has 3 pages:
 
 - `/` the home page
 

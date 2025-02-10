@@ -2,7 +2,6 @@ package com.corndel.cryptodo.controllers;
 
 import com.corndel.cryptodo.models.User;
 import com.corndel.cryptodo.repositories.UserRepository;
-import com.corndel.utils.PasswordHasher;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
@@ -19,9 +18,7 @@ public class UserController {
                 throw new RuntimeException("Please ensure that all required fields  are filled out.");
             }
 
-            String hashedPassword = PasswordHasher.hash(password);
-
-            User user = new User(username, hashedPassword, email);
+            User user = new User(username, password, email);
 
             UserRepository.create(user);
             context.redirect("./todo");
