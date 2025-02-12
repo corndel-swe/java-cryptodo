@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{fragments/head :: head}" th:with="title='Cryptodos | Todos'">
+
+<body>
+<header th:insert="~{fragments/nav :: nav}"></header>
+
+<h1 class="title">Todos</h1>
+<ul class="center">
+    <li th:each="todo : ${todos}">
+        <span th:text="${todo.description}"></span>
+        <b class="complete" th:if="${todo.completed}">(completed)</b>
+    </li>
+</ul>
+</body>
+</html>
